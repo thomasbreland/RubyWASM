@@ -62,14 +62,14 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Install Node Dependencies
-        run: npm install
+      - name: Install Yarn Dependencies
+        run: yarn --cwd ./pwa/ install
 
       - name: Vite build
-        run: npm run build --prefix ./pwa/
         env:
           NODE_ENV: production
           GH_PAGES_BASE_URL: /RubyWASM/
+        run: yarn --cwd ./pwa/ run build
 
       - name: Upload Artifact
         uses: actions/upload-pages-artifact@v3
