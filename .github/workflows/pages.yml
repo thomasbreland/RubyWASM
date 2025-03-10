@@ -27,9 +27,10 @@ jobs:
 
       - name: Install wasi-vfs
         run: |
-          echo "/home/linuxbrew/.linuxbrew/bin/brew" >> $GITHUB_PATH
+          which brew
           brew tap kateinoigakukun/wasi-vfs https://github.com/kateinoigakukun/wasi-vfs.git
           brew install kateinoigakukun/wasi-vfs/wasi-vfs
+          echo "/home/linuxbrew/.linuxbrew/bin" >> $GITHUB_PATH
           
       - name: Check for wasi-vfs
         run: |
