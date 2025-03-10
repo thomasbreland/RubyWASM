@@ -10,7 +10,9 @@ Rails 8.0.1
 
 wasmify-rails 0.2.3
 
-Using Node 18 for wasmify-rails
+Node 18
+
+Yarn 1.22.22
 
 Had to install `apt install unzip` and [wasi-vfs](https://github.com/kateinoigakukun/wasi-vfs) for wasmify-rails, the latter of which was made easier with [Homebrew](https://brew.sh/)
 
