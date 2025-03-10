@@ -19,11 +19,17 @@ concurrency:
 
 jobs:
   wasmify:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}  # Ensures success
+    if: ${{ github.event.workflow_run.head_branch == 'master' && github.event.workflow_run.conclusion == 'success' }}  # Ensures success of CI run and restricts to "master" branch
     runs-on: ubuntu-latest
     steps:
       - name: Install packages
         run: sudo apt-get update && sudo apt-get install --no-install-recommends -y build-essential
+
+      - name: Install wasi-vfs
+        run: |
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+          brew tap kateinoigakukun/wasi-vfs https://github.com/kateinoigakukun/wasi-vfs.git
+          brew install kateinoigakukun/wasi-vfs/wasi-vfs
 
       - name: Checkout code
         uses: actions/checkout@v4
@@ -46,7 +52,6 @@ jobs:
           path: './pwa'
 
   deploy:
-    if: ${{ github.event.workflow_run.head_branch == 'master' }}  # Restricts to "master"
     needs: wasmify
 
     environment:
