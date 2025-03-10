@@ -6,13 +6,16 @@ async function registerServiceWorker() {
     }
   }
 
+  // allow base URL to be set by environment, e.g., during pipeline, for deploying to GitHub Pages subdirectory
+  const BASE_URL = import.meta.env.BASE_URL;
+
   const workerUrl =
     import.meta.env.MODE === "production"
-      ? "/rails.sw.js"
-      : "/dev-sw.js?dev-sw";
+      ? BASE_URL + "rails.sw.js"
+      : BASE_URL + "dev-sw.js?dev-sw";
 
   await navigator.serviceWorker.register(workerUrl, {
-    scope: "/",
+    scope: BASE_URL,
     type: "module",
   });
 }

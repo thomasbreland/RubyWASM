@@ -51,16 +51,22 @@ jobs:
           ruby-version: .ruby-version
           bundler-cache: true
 
-      - name: build
+      - name: wasmify build
         run: bundle exec rails wasmify:build
 
-      - name: pack
+      - name: wasmify pack
         run: bundle exec rails wasmify:pack
+
+      - name: vite build
+        run: npm run build --prefix ./pwa/
+        env:
+          NODE_ENV: production
+          GH_PAGES_BASE_URL: /RubyWASM/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './pwa'
+          path: './pwa/dist'
 
   deploy:
     needs: wasmify
