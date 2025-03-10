@@ -27,6 +27,7 @@ jobs:
 
       - name: Install wasi-vfs
         run: |
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
           which brew
           brew tap kateinoigakukun/wasi-vfs https://github.com/kateinoigakukun/wasi-vfs.git
           brew install kateinoigakukun/wasi-vfs/wasi-vfs
