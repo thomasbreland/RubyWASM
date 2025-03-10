@@ -1,0 +1,60 @@
+name: GitHub Pages
+
+on:
+  workflow_run:
+    workflows: [CI]  # The name of the first workflow you're depending on
+    types:
+      - completed
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued; you may prefer to change this.
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  wasmify:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}  # Ensures success
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install packages
+        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y build-essential
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .ruby-version
+          bundler-cache: true
+
+      - name: build
+        run: bundle exec rails wasmify:build
+
+      - name: pack
+        run: bundle exec rails wasmify:pack
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './pwa'
+
+  deploy:
+    if: ${{ github.event.workflow_run.head_branch == 'master' }}  # Restricts to "master"
+    needs: wasmify
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
