@@ -7,6 +7,9 @@
 # Ignore bundler config.
 /.bundle
 
+# Ignore vendor folder
+vendor/
+
 # Ignore all environment files.
 /.env*
 
@@ -32,3 +35,14 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+
+# Ignore the compiled WebAssembly modules
+*.wasm
+
+# Ignore ruby.wasm build artefacts
+build/
+rubies/
+dist/
+
+# Ignore node_modules
+node_modules/

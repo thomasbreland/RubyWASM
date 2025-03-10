@@ -1,24 +1,26 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Versions
 
-Things you may want to cover:
+Ruby 3.3.6
 
-* Ruby version
+Rails 8.0.1
 
-* System dependencies
+wasmify-rails 0.2.3
 
-* Configuration
+Using Node 18 for wasmify-rails
 
-* Database creation
+Had to install `apt install unzip` and [wasi-vfs](https://github.com/kateinoigakukun/wasi-vfs) for wasmify-rails, the latter of which was made easier with [Homebrew](https://brew.sh/)
 
-* Database initialization
+## Issues encountered
 
-* How to run the test suite
+- Could not get to run in LibreWolf/Firefox, but can run in Edge/Chrome
+- Had to exclude gem "image_processing", "~> 1.2" from wasm group
+- bigdecimal kept being included even though ignored, so downgraded Ruby versions to 3.3.6 from 3.4.2 and that seems to have resolve it; may revisit this later to ensure it was the actual cause
 
-* Services (job queues, cache servers, search engines, etc.)
+Possibly relevant: https://github.com/ruby/bigdecimal/issues/289
 
-* Deployment instructions
+## Notes
 
-* ...
+- Ensure that branch name in ci.yml matches branch name in origin.
+- Changed Dependabot frequency to monthly.
