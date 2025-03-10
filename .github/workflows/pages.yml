@@ -12,10 +12,10 @@ permissions:
   pages: write
   id-token: write
 
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued; you may prefer to change this.
+# Allow only one concurrent deployment
 concurrency:
   group: "pages"
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   wasmify:
@@ -42,7 +42,7 @@ jobs:
               exit 1
           fi
 
-      - name: Checkout code
+      - name: Checkout Code
         uses: actions/checkout@v4
 
       - name: Set up Ruby
@@ -57,13 +57,21 @@ jobs:
       - name: wasmify pack
         run: bundle exec rails wasmify:pack
 
-      - name: vite build
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install Node Dependencies
+        run: npm install
+
+      - name: Vite build
         run: npm run build --prefix ./pwa/
         env:
           NODE_ENV: production
           GH_PAGES_BASE_URL: /RubyWASM/
 
-      - name: Upload artifact
+      - name: Upload Artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: './pwa/dist'
