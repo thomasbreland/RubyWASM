@@ -1,5 +1,7 @@
 # README
 
+Example of [wasmify-rails](https://github.com/palkan/wasmify-rails) using the [Getting Started with Rails](https://guides.rubyonrails.org/getting_started.html) example project.
+
 ## Versions
 
 Ruby 3.3.6
@@ -24,3 +26,11 @@ Possibly relevant: https://github.com/ruby/bigdecimal/issues/289
 
 - Ensure that branch name in ci.yml matches branch name in origin.
 - Changed Dependabot frequency to monthly.
+
+## Known issues
+
+- Does not pass wasmify:pack:core:validate, so expect runtime errors
+
+## todo
+
+- Add a migration to add a demo user
