@@ -11,7 +11,6 @@
   },
   "devDependencies": {
     "vite": "^4.4.5",
-    "vite-plugin-html": "^3.2.2",
     "vite-plugin-pwa": "^0.20.5"
   },
   "dependencies": {
