@@ -1,7 +1,7 @@
-async function registerServiceWorker() {
-  // allow base URL to be set by environment, e.g., during pipeline, for deploying to GitHub Pages subdirectory
-  const BASE_URL = import.meta.env.BASE_URL;
+// allow base URL to be set by environment, e.g., during pipeline, for deploying to GitHub Pages subdirectory
+const BASE_URL = import.meta.env.BASE_URL;
 
+async function registerServiceWorker() {
   const oldRegistrations = await navigator.serviceWorker.getRegistrations();
   for (const registration of oldRegistrations) {
     if (!registration.scope.startsWith(BASE_URL)) {
@@ -76,7 +76,7 @@ async function init() {
   launchButton.disabled = false;
   launchButton.addEventListener("click", async function () {
     // Open in a new window
-    window.open("/", "_blank");
+    window.open(BASE_URL, "_blank");
   });
 
   const rebootButton = document.getElementById("reboot-button");
