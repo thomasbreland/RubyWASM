@@ -1,13 +1,16 @@
 async function registerServiceWorker() {
+  // allow base URL to be set by environment, e.g., during pipeline, for deploying to GitHub Pages subdirectory
+  const BASE_URL = import.meta.env.BASE_URL;
+
   const oldRegistrations = await navigator.serviceWorker.getRegistrations();
   for (const registration of oldRegistrations) {
+    if (!registration.scope.startsWith(BASE_URL)) {
+      continue;
+    }
     if (registration.installing.state === "installing") {
       return;
     }
   }
-
-  // allow base URL to be set by environment, e.g., during pipeline, for deploying to GitHub Pages subdirectory
-  const BASE_URL = import.meta.env.BASE_URL;
 
   const workerUrl =
     import.meta.env.MODE === "production"
