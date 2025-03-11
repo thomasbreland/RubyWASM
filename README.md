@@ -20,7 +20,8 @@ Had to install `apt install unzip` and [wasi-vfs](https://github.com/kateinoigak
 
 - Had to exclude gem "image_processing", "~> 1.2" from wasm group
 - bigdecimal kept being included even though ignored, so downgraded Ruby versions to 3.3.6 from 3.4.2 and that seems to have resolve it; may revisit this later to ensure it was the actual cause (see link below)
-- Had to set the base URL in the generated vite.config.js, index.html (variable injected through vite.config.js), and boot.js; this required removing these pages from the rollup options (there is almost certainly a better way to handle this - I tried using "./" for the base path but still ran into issues)
+- Had to set the base URL in the generated vite.config.js, index.html (variable injected through vite.config.js), and boot.js; this required removing index.html from the rollup options (there is almost certainly a better way to handle this - I tried using "./" for the base path but still ran into issues, will revisit this)
+- Added self.registration.scope to paths in rails.sw.js - could probably just use a relative path (will revisit this)
 - Had to change scope for service worker in the generated boot.js
 - Had to add COOP and COEP headers in service worker because GitHub Pages does not have them
 
