@@ -18,6 +18,13 @@ export default defineConfig({
   optimizeDeps: {
     exclude: ["@sqlite.org/sqlite-wasm"],
   },
+  build: {
+    rollupOptions: {
+      input: {
+        boot: path.resolve(__dirname, 'boot.html'),
+      },
+    },
+  },
   plugins: [
     VitePWA({
       srcDir: ".",
