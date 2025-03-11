@@ -76,7 +76,7 @@ async function init() {
   launchButton.disabled = false;
   launchButton.addEventListener("click", async function () {
     // Open in a new window
-    window.open("./", "_blank");
+    window.open(BASE_URL, "_blank");
   });
 
   const rebootButton = document.getElementById("reboot-button");
