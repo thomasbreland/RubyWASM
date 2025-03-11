@@ -49,15 +49,6 @@ export default defineConfig({
               BASE_URL: BASE_URL
             }
           }
-        },
-        {
-          filename: 'boot.html',
-          template: 'boot.html',
-          injectOptions: {
-            data: {
-              BASE_URL: BASE_URL
-            }
-          }
         }
       ],
     })
