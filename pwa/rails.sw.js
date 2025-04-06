@@ -86,7 +86,12 @@ self.addEventListener("fetch", (event) => {
       "[rails-web] Fetching boot files from network:",
       event.request.url,
     );
-    event.respondWith(fetch(event.request.url));
+    event.respondWith(fetch(event.request.url) {
+      headers: {
+        'Cross-Origin-Opener-Policy': 'same-origin',
+        'Cross-Origin-Embedder-Policy': 'require-corp',
+      },
+    });
     return;
   }
 

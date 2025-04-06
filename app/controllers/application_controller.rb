@@ -9,4 +9,7 @@ class ApplicationController < ActionController::Base
     locale = params[:locale] || I18n.default_locale
     I18n.with_locale(locale, &action)
   end
+
+  # Disable CSRF protection to make the app work in iframe from anywhere.
+   skip_before_action :verify_authenticity_token
 end
