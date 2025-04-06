@@ -1,5 +1,6 @@
 <h1><%= t ".title" %></h1>
 
+<%= content_tag(:p, "Demo credentials: you@example.org/s3cr3t", style: "color: red;") %>
 
 <%= link_to "New product", new_product_path if authenticated? %>
 
