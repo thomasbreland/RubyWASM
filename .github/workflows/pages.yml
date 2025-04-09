@@ -1,0 +1,91 @@
+name: GitHub Pages
+
+on:
+  workflow_dispatch:
+  # workflow_run:
+  #   workflows: [CI]  # The name of the first workflow you're depending on
+  #   types:
+  #     - completed
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  wasmify:
+    # if: ${{ github.event.workflow_run.head_branch == 'master' && github.event.workflow_run.conclusion == 'success' }}  # Ensures success of CI run and restricts to master branch
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install packages
+        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y build-essential
+
+      - name: Install wasi-vfs
+        run: |
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+          which brew
+          brew tap kateinoigakukun/wasi-vfs https://github.com/kateinoigakukun/wasi-vfs.git
+          brew install kateinoigakukun/wasi-vfs/wasi-vfs
+          echo "/home/linuxbrew/.linuxbrew/bin" >> $GITHUB_PATH
+          
+      - name: Check for wasi-vfs
+        run: |
+          if command -v wasi-vfs &> /dev/null; then
+              echo "wasi-vfs is installed!"
+              which wasi-vfs
+          else
+              exit 1
+          fi
+
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .ruby-version
+          bundler-cache: true
+
+      - name: wasmify build
+        run: bundle exec rails wasmify:build
+
+      - name: wasmify pack
+        run: bundle exec rails wasmify:pack
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install Yarn Dependencies
+        run: yarn --cwd ./pwa/ install
+
+      - name: Vite build
+        env:
+          NODE_ENV: production
+          GH_PAGES_BASE_URL: /RubyWASM/
+        run: yarn --cwd ./pwa/ run build
+
+      - name: Upload Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './pwa/dist'
+
+  deploy:
+    needs: wasmify
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
