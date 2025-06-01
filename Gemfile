@@ -62,7 +62,7 @@ group :test do
   gem "selenium-webdriver"
 end
 
-gem "wasmify-rails", "~> 0.2.3", group: [ :default, :wasm ]
+gem "wasmify-rails", "~> 0.3.2", group: [ :default, :wasm ]
 
 group :wasm do
   gem "tzinfo-data"
